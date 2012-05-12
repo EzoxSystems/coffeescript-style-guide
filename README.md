@@ -268,7 +268,7 @@ You will sometimes see parentheses used to group functions (instead of being use
 ```coffeescript
 ($('#selektor').dance()).addClass('klass')
 
-(foo(4).thing(7)).bar 8
+(foo(4).thing(7)).bar(8)
 ```
 
 In cases where method calls are being chained, some adopters of this style prefer to use function grouping for the initial call only:
