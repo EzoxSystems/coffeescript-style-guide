@@ -97,15 +97,16 @@ Avoid extraneous whitespace in the following situations:
 - Immediately inside parentheses, brackets or braces
 
     ```coffeescript
-       ($ 'body') # Yes
-       ( $ 'body' ) # No
+       ($('body')) # Yes
+       ($( 'body' )) # No
+       ( $( 'body' ) ) # No
     ```
 
 - Immediately before a comma
 
     ```coffeescript
-       console.log x, y # Yes
-       console.log x , y # No
+       console.log(x, y) # Yes
+       console.log(x , y) # No
     ```
 
 Additional recommendations:
@@ -114,11 +115,11 @@ Additional recommendations:
 
     - assignment: `=`
 
-        - _Note that this also applies when indicating default parameter value(s) in a function declaration_
+        - _Note that this does not apply when indicating default parameter value(s) in a function declaration_
 
            ```coffeescript
-           test: (param = null) -> # Yes
-           test: (param=null) -> # No
+           test: (param=null) -> # Yes
+           test: (param = null) -> # No
            ```
 
     - augmented assignment: `+=`, `-=`, etc.
@@ -233,28 +234,31 @@ bar = -> # Yes
 bar = () -> # No
 ```
 
-In cases where method calls are being chained and the code does not fit on a single line, each call should be placed on a separate line and indented by one level (i.e., two spaces), with a leading `.`.
+In cases where method calls are being chained and the code does not fit on a single line, each call should be placed on a separate line and indented by four (4) spaces, with a leading `.`.
 
 ```coffeescript
 [1..3]
-  .map((x) -> x * x)
-  .concat([10..12])
-  .filter((x) -> x < 11)
-  .reduce((x, y) -> x + y)
+    .map((x) -> x * x)
+    .concat([10..12])
+    .filter((x) -> x < 11)
+    .reduce((x, y) -> x + y)
 ```
 
-When calling functions, choose to omit or include parentheses in such a way that optimizes for readability. Keeping in mind that "readability" can be subjective, the following examples demonstrate cases where parentheses have been omitted or included in a manner that the community deems to be optimal:
+When calling functions, *always* include parentheses (it optimizes readability).
 
 ```coffeescript
-baz 12
+baz(12) # Yes
+baz 12 # No
 
-brush.ellipse x: 10, y: 20 # Braces can also be omitted or included for readability
+brush.ellipse(x: 10, y: 20) # Braces can be omitted or included for readability
 
-foo(4).bar(8)
+foo(4).bar(8) # Yes
+foo(4).bar 8 # No
 
-obj.value(10, 20) / obj.value(20, 10)
+obj.value(10, 20) / obj.value(20, 10) # Yes
 
-print inspect value
+print(inspect(value)) # Yes
+print inspect value # No!
 
 new Tag(new Value(a, b), new Arg(c))
 ```
@@ -262,24 +266,16 @@ new Tag(new Value(a, b), new Arg(c))
 You will sometimes see parentheses used to group functions (instead of being used to group function parameters). Examples of using this style (hereafter referred to as the "function grouping style"):
 
 ```coffeescript
-($ '#selektor').addClass 'klass'
+($('#selektor').dance()).addClass('klass')
 
-(foo 4).bar 8
-```
-
-This is in contrast to:
-
-```coffeescript
-$('#selektor').addClass 'klass'
-
-foo(4).bar 8
+(foo(4).thing(7)).bar 8
 ```
 
 In cases where method calls are being chained, some adopters of this style prefer to use function grouping for the initial call only:
 
 ```coffeescript
-($ '#selektor').addClass('klass').hide() # Initial call only
-(($ '#selektor').addClass 'klass').hide() # All calls
+($('#selektor')).addClass('klass').hide() # Initial call only
+(($ '#selektor').addClass('klass')).hide() # All calls
 ```
 
 The function grouping style is not recommended. However, **if the function grouping style is adopted for a particular project, be consistent with its usage.**
@@ -343,7 +339,7 @@ Take advantage of comprehensions whenever possible:
   # No
   results = []
   for item in array
-    results.push item.name
+    results.push(item.name)
 ```
 
 To filter:
@@ -355,7 +351,7 @@ result = (item for item in array when item.name is "test")
 To iterate over the keys and values of objects:
 
 ```coffeescript
-object = one: 1, two: 2
+object = {one: 1, two: 2}
 alert("#{key} = #{value}") for key, value of object
 ```
 
@@ -443,12 +439,12 @@ return this # Yes
 return @ # No
 ```
 
-Avoid `return` where not required, unless the explicit return increases clarity.
+Always use `return`, the explicit return increases clarity.
 
 Use splats (`...`) when working with functions that accept variable numbers of arguments:
 
 ```coffeescript
-console.log args... # Yes
+console.log(args...) # Yes
 
 (a, b, c, rest...) -> # Yes
 ```
